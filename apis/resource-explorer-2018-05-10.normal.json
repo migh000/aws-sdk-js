@@ -1,0 +1,136 @@
+{
+  "version": "2.0",
+  "metadata": {
+    "apiVersion": "2018-05-10",
+    "endpointPrefix": "resource-explorer",
+    "jsonVersion": "1.1",
+    "protocol": "rest-json",
+    "serviceFullName": "ArdiResourceExplorer model definition",
+    "serviceId": "Resource Explorer",
+    "signatureVersion": "v4",
+    "signingName": "resource-explorer",
+    "uid": "resource-explorer-2018-05-10"
+  },
+  "operations": {
+    "ListResourceTypes": {
+      "http": {
+        "requestUri": "/resource-types-list",
+        "responseCode": 200
+      },
+      "input": {
+        "type": "structure",
+        "required": [
+          "QueryType"
+        ],
+        "members": {
+          "Filters": {
+            "type": "list",
+            "member": {
+              "type": "structure",
+              "required": [
+                "Name"
+              ],
+              "members": {
+                "Name": {},
+                "Values": {
+                  "type": "list",
+                  "member": {}
+                }
+              }
+            }
+          },
+          "MaxResults": {
+            "type": "integer"
+          },
+          "NextToken": {},
+          "QueryType": {}
+        }
+      },
+      "output": {
+        "type": "structure",
+        "members": {
+          "NextToken": {},
+          "ResourceTypes": {
+            "type": "list",
+            "member": {}
+          }
+        }
+      }
+    },
+    "ListResources": {
+      "http": {
+        "requestUri": "/resources-list",
+        "responseCode": 200
+      },
+      "input": {
+        "type": "structure",
+        "required": [
+          "ResourceType"
+        ],
+        "members": {
+          "NextToken": {},
+          "ResourceType": {}
+        }
+      },
+      "output": {
+        "type": "structure",
+        "members": {
+          "NextToken": {},
+          "ResourceArns": {
+            "type": "list",
+            "member": {}
+          }
+        }
+      }
+    },
+    "ListTags": {
+      "http": {
+        "requestUri": "/tags-list",
+        "responseCode": 200
+      },
+      "input": {
+        "type": "structure",
+        "required": [
+          "ResourceArns"
+        ],
+        "members": {
+          "ResourceArns": {
+            "type": "list",
+            "member": {}
+          }
+        }
+      },
+      "output": {
+        "type": "structure",
+        "members": {
+          "ResourceTags": {
+            "type": "list",
+            "member": {
+              "type": "structure",
+              "required": [
+                "ResourceArn"
+              ],
+              "members": {
+                "ResourceArn": {},
+                "Tags": {
+                  "type": "list",
+                  "member": {
+                    "type": "structure",
+                    "required": [
+                      "Key"
+                    ],
+                    "members": {
+                      "Key": {},
+                      "Value": {}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "shapes": {}
+}
