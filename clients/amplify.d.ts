@@ -3,7 +3,7 @@ import {Response} from '../lib/response';
 import {AWSError} from '../lib/error';
 import {Service} from '../lib/service';
 import {ServiceConfigurationOptions} from '../lib/service';
-import {ConfigBase as Config} from '../lib/config';
+import {ConfigBase as Config} from '../lib/config-base';
 interface Blob {}
 declare class Amplify extends Service {
   /**
@@ -333,7 +333,7 @@ declare namespace Amplify {
      */
     description: Description;
     /**
-     *  The repository for the Amplify app. 
+     *  The Git repository for the Amplify app. 
      */
     repository: Repository;
     /**
@@ -373,7 +373,7 @@ declare namespace Amplify {
      */
     enableBasicAuth: EnableBasicAuth;
     /**
-     *  The basic authorization credentials for branches for the Amplify app. 
+     *  The basic authorization credentials for branches for the Amplify app. You must base64-encode the authorization credentials and provide them in the format user:password.
      */
     basicAuthCredentials?: BasicAuthCredentials;
     /**
@@ -389,6 +389,10 @@ declare namespace Amplify {
      */
     buildSpec?: BuildSpec;
     /**
+     * Describes the custom HTTP headers for the Amplify app.
+     */
+    customHeaders?: CustomHeaders;
+    /**
      *  Enables automated branch creation for the Amplify app. 
      */
     enableAutoBranchCreation?: EnableAutoBranchCreation;
@@ -400,6 +404,10 @@ declare namespace Amplify {
      *  Describes the automated branch creation configuration for the Amplify app. 
      */
     autoBranchCreationConfig?: AutoBranchCreationConfig;
+    /**
+     * The authentication protocol to use to access the Git repository for an Amplify app. For a GitHub repository, specify TOKEN. For an Amazon Web Services CodeCommit repository, specify SIGV4. For GitLab and Bitbucket repositories, specify SSH.
+     */
+    repositoryCloneMethod?: RepositoryCloneMethod;
   }
   export type AppArn = string;
   export type AppId = string;
@@ -439,7 +447,7 @@ declare namespace Amplify {
      */
     environmentVariables?: EnvironmentVariables;
     /**
-     *  The basic authorization credentials for the autocreated branch. 
+     *  The basic authorization credentials for the autocreated branch. You must base64-encode the authorization credentials and provide them in the format user:password.
      */
     basicAuthCredentials?: BasicAuthCredentials;
     /**
@@ -447,11 +455,15 @@ declare namespace Amplify {
      */
     enableBasicAuth?: EnableBasicAuth;
     /**
+     * Enables performance mode for the branch. Performance mode optimizes for faster hosting performance by keeping content cached at the edge for a longer interval. When performance mode is enabled, hosting configuration or code changes can take up to 10 minutes to roll out. 
+     */
+    enablePerformanceMode?: EnablePerformanceMode;
+    /**
      *  The build specification (build spec) for the autocreated branch. 
      */
     buildSpec?: BuildSpec;
     /**
-     *  Enables pull request preview for the autocreated branch. 
+     *  Enables pull request previews for the autocreated branch. 
      */
     enablePullRequestPreview?: EnablePullRequestPreview;
     /**
@@ -559,11 +571,15 @@ declare namespace Amplify {
      */
     enableBasicAuth: EnableBasicAuth;
     /**
+     * Enables performance mode for the branch. Performance mode optimizes for faster hosting performance by keeping content cached at the edge for a longer interval. When performance mode is enabled, hosting configuration or code changes can take up to 10 minutes to roll out. 
+     */
+    enablePerformanceMode?: EnablePerformanceMode;
+    /**
      *  The thumbnail URL for the branch of an Amplify app. 
      */
     thumbnailUrl?: ThumbnailUrl;
     /**
-     *  The basic authorization credentials for a branch of an Amplify app. 
+     *  The basic authorization credentials for a branch of an Amplify app. You must base64-encode the authorization credentials and provide them in the format user:password.
      */
     basicAuthCredentials?: BasicAuthCredentials;
     /**
@@ -579,7 +595,7 @@ declare namespace Amplify {
      */
     associatedResources?: AssociatedResources;
     /**
-     *  Enables pull request preview for the branch. 
+     *  Enables pull request previews for the branch. 
      */
     enablePullRequestPreview: EnablePullRequestPreview;
     /**
@@ -611,7 +627,7 @@ declare namespace Amplify {
   export type Context = string;
   export interface CreateAppRequest {
     /**
-     *  The name for the Amplify app. 
+     *  The name for an Amplify app. 
      */
     name: Name;
     /**
@@ -655,7 +671,7 @@ declare namespace Amplify {
      */
     enableBasicAuth?: EnableBasicAuth;
     /**
-     *  The credentials for basic authorization for an Amplify app. 
+     *  The credentials for basic authorization for an Amplify app. You must base64-encode the authorization credentials and provide them in the format user:password.
      */
     basicAuthCredentials?: BasicAuthCredentials;
     /**
@@ -671,15 +687,19 @@ declare namespace Amplify {
      */
     buildSpec?: BuildSpec;
     /**
-     *  Enables automated branch creation for the Amplify app. 
+     * The custom HTTP headers for an Amplify app.
+     */
+    customHeaders?: CustomHeaders;
+    /**
+     *  Enables automated branch creation for an Amplify app. 
      */
     enableAutoBranchCreation?: EnableAutoBranchCreation;
     /**
-     *  The automated branch creation glob patterns for the Amplify app. 
+     *  The automated branch creation glob patterns for an Amplify app. 
      */
     autoBranchCreationPatterns?: AutoBranchCreationPatterns;
     /**
-     *  The automated branch creation configuration for the Amplify app. 
+     *  The automated branch creation configuration for an Amplify app. 
      */
     autoBranchCreationConfig?: AutoBranchCreationConfig;
   }
@@ -744,13 +764,17 @@ declare namespace Amplify {
      */
     environmentVariables?: EnvironmentVariables;
     /**
-     *  The basic authorization credentials for the branch. 
+     *  The basic authorization credentials for the branch. You must base64-encode the authorization credentials and provide them in the format user:password.
      */
     basicAuthCredentials?: BasicAuthCredentials;
     /**
      *  Enables basic authorization for the branch. 
      */
     enableBasicAuth?: EnableBasicAuth;
+    /**
+     * Enables performance mode for the branch. Performance mode optimizes for faster hosting performance by keeping content cached at the edge for a longer interval. When performance mode is enabled, hosting configuration or code changes can take up to 10 minutes to roll out. 
+     */
+    enablePerformanceMode?: EnablePerformanceMode;
     /**
      *  The tag for the branch. 
      */
@@ -768,7 +792,7 @@ declare namespace Amplify {
      */
     displayName?: DisplayName;
     /**
-     *  Enables pull request preview for this branch. 
+     *  Enables pull request previews for this branch. 
      */
     enablePullRequestPreview?: EnablePullRequestPreview;
     /**
@@ -869,6 +893,7 @@ declare namespace Amplify {
   }
   export type CustomDomain = string;
   export type CustomDomains = CustomDomain[];
+  export type CustomHeaders = string;
   export interface CustomRule {
     /**
      *  The source pattern for a URL rewrite or redirect rule. 
@@ -879,7 +904,7 @@ declare namespace Amplify {
      */
     target: Target;
     /**
-     *  The status code for a URL rewrite or redirect rule. 
+     *  The status code for a URL rewrite or redirect rule.   200  Represents a 200 rewrite rule.  301  Represents a 301 (moved pemanently) redirect rule. This and all future requests should be directed to the target URL.   302  Represents a 302 temporary redirect rule.  404  Represents a 404 redirect rule.  404-200  Represents a 404 rewrite rule.  
      */
     status?: Status;
     /**
@@ -1026,6 +1051,7 @@ declare namespace Amplify {
   export type EnableBranchAutoBuild = boolean;
   export type EnableBranchAutoDeletion = boolean;
   export type EnableNotification = boolean;
+  export type EnablePerformanceMode = boolean;
   export type EnablePullRequestPreview = boolean;
   export type EndTime = Date;
   export type EnvKey = string;
@@ -1412,7 +1438,7 @@ declare namespace Amplify {
   export type Name = string;
   export type NextToken = string;
   export type OauthToken = string;
-  export type Platform = "WEB"|string;
+  export type Platform = "WEB"|"WEB_DYNAMIC"|string;
   export interface ProductionBranch {
     /**
      *  The last deploy time of the production branch. 
@@ -1433,6 +1459,7 @@ declare namespace Amplify {
   }
   export type PullRequestEnvironmentName = string;
   export type Repository = string;
+  export type RepositoryCloneMethod = "SSH"|"TOKEN"|"SIGV4"|string;
   export type ResourceArn = string;
   export type Screenshots = {[key: string]: ThumbnailUrl};
   export type ServiceRoleArn = string;
@@ -1674,7 +1701,7 @@ declare namespace Amplify {
      */
     enableBasicAuth?: EnableBasicAuth;
     /**
-     *  The basic authorization credentials for an Amplify app. 
+     *  The basic authorization credentials for an Amplify app. You must base64-encode the authorization credentials and provide them in the format user:password.
      */
     basicAuthCredentials?: BasicAuthCredentials;
     /**
@@ -1686,15 +1713,19 @@ declare namespace Amplify {
      */
     buildSpec?: BuildSpec;
     /**
-     *  Enables automated branch creation for the Amplify app. 
+     * The custom HTTP headers for an Amplify app.
+     */
+    customHeaders?: CustomHeaders;
+    /**
+     *  Enables automated branch creation for an Amplify app. 
      */
     enableAutoBranchCreation?: EnableAutoBranchCreation;
     /**
-     *  Describes the automated branch creation glob patterns for the Amplify app. 
+     *  Describes the automated branch creation glob patterns for an Amplify app. 
      */
     autoBranchCreationPatterns?: AutoBranchCreationPatterns;
     /**
-     *  The automated branch creation configuration for the Amplify app. 
+     *  The automated branch creation configuration for an Amplify app. 
      */
     autoBranchCreationConfig?: AutoBranchCreationConfig;
     /**
@@ -1750,13 +1781,17 @@ declare namespace Amplify {
      */
     environmentVariables?: EnvironmentVariables;
     /**
-     *  The basic authorization credentials for the branch. 
+     *  The basic authorization credentials for the branch. You must base64-encode the authorization credentials and provide them in the format user:password.
      */
     basicAuthCredentials?: BasicAuthCredentials;
     /**
      *  Enables basic authorization for the branch. 
      */
     enableBasicAuth?: EnableBasicAuth;
+    /**
+     * Enables performance mode for the branch. Performance mode optimizes for faster hosting performance by keeping content cached at the edge for a longer interval. When performance mode is enabled, hosting configuration or code changes can take up to 10 minutes to roll out. 
+     */
+    enablePerformanceMode?: EnablePerformanceMode;
     /**
      *  The build specification (build spec) for the branch. 
      */
@@ -1770,7 +1805,7 @@ declare namespace Amplify {
      */
     displayName?: DisplayName;
     /**
-     *  Enables pull request preview for this branch. 
+     *  Enables pull request previews for this branch. 
      */
     enablePullRequestPreview?: EnablePullRequestPreview;
     /**
@@ -1804,7 +1839,7 @@ declare namespace Amplify {
     /**
      *  Describes the settings for the subdomain. 
      */
-    subDomainSettings: SubDomainSettings;
+    subDomainSettings?: SubDomainSettings;
     /**
      *  Sets the branch patterns for automatic subdomain creation. 
      */
